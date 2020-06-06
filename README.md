@@ -1,72 +1,44 @@
-# Project Title
-One Paragraph of project description goes here
+# L4T-ROS-Base
+
+SONIA'S custom Linux 4 Tegra, ROS docker images, this base image has been created to reduce [sonia_msgs](https://github.com/sonia-auv/sonia_msgs) build time
+
+![Docker Image CI - Master Branch](https://github.com/sonia-auv/l4t-ros-base/workflows/Docker%20Image%20CI%20-%20Master%20Branch/badge.svg)
+![Docker Image CI - Develop Branch](https://github.com/sonia-auv/l4t-ros-base/workflows/Docker%20Image%20CI%20-%20Develop%20Branch/badge.svg?branch=develop)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/sonia-auv/l4t-ros-base
+![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/sonia-auv/l4t-ros-base.svg)
+
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+Project can be cloned locally as an individual package, it can be done using the following command:
+
+```bash
+git clone git@github.com:sonia-auv/l4t-ros-base.git
+```
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+To be able to use this project, you must install **docker** and **docker-compose**
 
-```
-Give examples
-```
+Here are two recommended tutorials from Digital Ocean:
 
-### Installing
+* To install docker see [Docker Install Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04)
+* To install docker-compose see [Docker Compose Install Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-18-04)
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Built With
 
 The following packages are examples they should be replaced with project dependencies
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [ROS](http://wiki.ros.org/) - ROS Framework
+* [Docker](https://docs.docker.com/) - Docker
+* [NVIDIA L4T](https://ngc.nvidia.com/catalog/containers/nvidia:l4t-base)
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [Release Page](https://github.com/sonia-auv/sonia_msgs/releases).
 
 ## License
 
-This project is licensed under the GNU License - see the [LICENSE](LICENSE) file for details
+All licences have been added into the container image 
