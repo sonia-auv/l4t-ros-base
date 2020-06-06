@@ -33,7 +33,7 @@ The following packages are examples they should be replaced with project depende
 
 * [ROS](http://wiki.ros.org/) - ROS Framework
 * [Docker](https://docs.docker.com/) - Docker
-* [NVIDIA L4T](https://ngc.nvidia.com/catalog/containers/nvidia:l4t-base)
+* [NVIDIA L4T](https://ngc.nvidia.com/catalog/containers/nvidia:l4t-base) - NVIDIA L4T Base
 
 ## Versioning
 
