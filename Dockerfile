@@ -1,4 +1,6 @@
+
 ARG L4T_IMG_TAG=r32.4.2
+ARG ROS_META_PACKAGE=robot
 FROM nvcr.io/nvidia/l4t-base:${L4T_IMG_TAG}
 
 # Highly inspired on
@@ -11,7 +13,7 @@ ARG VERSION
 
 LABEL maintainer="club.sonia@etsmtl.net"
 LABEL net.etsmtl.sonia-auv.base_img.build-date={BUILD_DATE}
-LABEL net.etsmtl.sonia-auv.base_img.version=${VERSION}
+LABEL  net.etsmtl.sonia-auv.base_img.version=${VERSION}
 LABEL net.etsmtl.sonia-auv.source_img.version=${L4T_IMG_TAG}
 
 # System Specific
@@ -46,11 +48,11 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     python-rosinstall \
     python-vcstools \
     && rosdep init  \
-    && rosdep update --rosdistro $ROS_DISTRO \
+    && rosdep update --rosdistro ${ROS_DISTRO} \
     && rm -rf /var/lib/apt/lists/*
 
 # Install ROS packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-melodic-ros-base=1.4.1-0* \
-    ros-melodic-robot=1.4.1-0* \
+    ros-melodic-${ROS_META_PACKAGE}=1.4.1-0* \
     && rm -rf /var/lib/apt/lists/*
