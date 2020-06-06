@@ -1,0 +1,106 @@
+name: Docker Image CI - Develop Branch
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  build-ros-robot-l4t-arm64:
+    name: "Build ROS robot L4T ARM64 (NVIDIA XAVIER)"
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: l4t_ros_robot_base
+      DOCKERFILE: Dockerfile-robot
+      GITHUB_REMOTE_URL: docker.pkg.github.com/${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install QEMU to be able to compile on X86 into ARM64
+        run: |
+          sudo apt-get install qemu binfmt-support qemu-user-static
+          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
+      - name: Build the docker image (robot based)
+        run: |
+          docker build . --file ${DOCKERFILE} --tag build-develop-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '  +%Y-%m-%d_%H:%M:%S')
+
+      - name: Run Module Unit Test
+        run: |
+          docker run build-develop-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} catkin_make run_tests
+          docker run build-develop-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} catkin_make tests
+
+      - name: Login to Github Package Registry
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
+      - name: Create Docker Image Tag
+        run: |
+          docker tag build-develop-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:develop
+
+      - name: Push Image to Github Packages Registry
+        run: |
+          docker push ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:develop
+
+  build-ros-perception-l4t-arm64:
+    name: "Build ROS perception L4T ARM64 (NVIDIA XAVIER)"
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: l4t_ros_perception_base
+      DOCKERFILE: Dockerfile-perception
+      GITHUB_REMOTE_URL: docker.pkg.github.com/${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install QEMU to be able to compile on X86 into ARM64
+        run: |
+          sudo apt-get install qemu binfmt-support qemu-user-static
+          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
+      - name: Build the docker image (perception based)
+        run: |
+          docker build . --file ${DOCKERFILE}  --tag build-develop-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '  +%Y-%m-%d_%H:%M:%S')
+
+      - name: Run Module Unit Test
+        run: |
+          docker run build-develop-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} catkin_make run_tests
+          docker run build-develop-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} catkin_make tests
+
+      - name: Login to Github Package Registry
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
+      - name: Create Docker Image Tag
+        run: |
+          docker tag build-develop-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:develop
+
+      - name: Push Image to Github Packages Registry
+        run: |
+          docker push ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:develop
+
+  notify-success:
+    name: "Notify Slack - Success"
+    runs-on: ubuntu-latest
+    needs: [build-ros-robot-l4t-arm64, build-ros-perception-l4t-arm64]
+    if: success()
+    steps:
+      - name: Notify Slack Success
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: github-ci-notifications
+          status: SUCCESS
+          color: good
+
+  notify-fail:
+    name: "Notify Slack - Failure"
+    runs-on: ubuntu-latest
+    needs: [build-ros-robot-l4t-arm64, build-ros-perception-l4t-arm64]
+    if: failure()
+    steps:
+      - name: Notify Slack Fail
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: github-ci-notifications
+          status: FAILED
+          color: danger
