@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: l4t_ros_robot_base
-      DOCKERFILE: Dockerfile-robot
+      ROS_META_PACKAGE: robot
       GITHUB_REMOTE_URL: docker.pkg.github.com/${{ github.repository }}
     steps:
       - uses: actions/checkout@v2
@@ -22,6 +22,7 @@ jobs:
       - name: Build the docker image (robot base)
         run: |
           docker build . --file ${DOCKERFILE} --tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '  +%Y-%m-%d_%H:%M:%S')
+          --build-arg ROS_META_PACKAGE=${ROS_META_PACKAGE}
 
       - name: Login to Github Package Registry
         run: |
@@ -43,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: l4t_ros_perception_base
-      DOCKERFILE: Dockerfile-perception
+      ROS_META_PACKAGE: perception
       GITHUB_REMOTE_URL: docker.pkg.github.com/${{ github.repository }}
     steps:
       - uses: actions/checkout@v2
@@ -54,7 +55,7 @@ jobs:
 
       - name: Build the docker image (robot base)
         run: |
-          docker build . --file ${DOCKERFILE} --tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '  +%Y-%m-%d_%H:%M:%S')
+          docker build . --file ${DOCKERFILE} --tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '  +%Y-%m-%d_%H:%M:%S') --build-arg ROS_META_PACKAGE=${ROS_META_PACKAGE}
 
       - name: Login to Github Package Registry
         run: |

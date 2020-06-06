@@ -1,6 +1,5 @@
 
 ARG L4T_IMG_TAG=r32.4.2
-ARG ROS_META_PACKAGE=robot
 FROM nvcr.io/nvidia/l4t-base:${L4T_IMG_TAG}
 
 # Highly inspired on
@@ -10,20 +9,20 @@ FROM nvcr.io/nvidia/l4t-base:${L4T_IMG_TAG}
 
 ARG BUILD_DATE
 ARG VERSION
+ARG TARGET_ROS_META_PACKAGE
 
 LABEL maintainer="club.sonia@etsmtl.net"
-LABEL net.etsmtl.sonia-auv.base_img.build-date={BUILD_DATE}
-LABEL  net.etsmtl.sonia-auv.base_img.version=${VERSION}
-LABEL net.etsmtl.sonia-auv.source_img.version=${L4T_IMG_TAG}
+LABEL net.etsmtl.sonia-auv.base_img.build-date=${BUILD_DATE}
+LABEL net.etsmtl.sonia-auv.base_img.version=${VERSION}
 
 # System Specific
 ENV DEBIAN_FRONTEND=noninteractive
-
 
 # ROS Specific
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 ENV ROS_DISTRO=melodic
+ENV ROS_META_PACKAGE=${ROS_META_PACKAGE}
 
 # ROS Install Start
 # setup timezone
