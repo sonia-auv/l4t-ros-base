@@ -23,11 +23,6 @@ jobs:
         run: |
           docker build . --file ${DOCKERFILE} --tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '  +%Y-%m-%d_%H:%M:%S')
 
-      - name: Run Module Unit Test
-        run: |
-          docker run build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} catkin_make run_tests
-          docker run build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} catkin_make tests
-
       - name: Login to Github Package Registry
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
@@ -60,11 +55,6 @@ jobs:
       - name: Build the docker image (robot base)
         run: |
           docker build . --file ${DOCKERFILE} --tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '  +%Y-%m-%d_%H:%M:%S')
-
-      - name: Run Module Unit Test
-        run: |
-          docker run build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} catkin_make run_tests
-          docker run build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} catkin_make tests
 
       - name: Login to Github Package Registry
         run: |
