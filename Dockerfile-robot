@@ -7,11 +7,12 @@ FROM nvcr.io/nvidia/l4t-base:${L4T_IMG_TAG}
 # https://github.com/osrf/docker_images/blob/7ff09c2a75e902bc2bb25a1f1ae748ec4e9c7a4b/ros/melodic/ubuntu/bionic/robot/Dockerfile
 
 ARG BUILD_DATE
+ARG VERSION
 
 LABEL maintainer="club.sonia@etsmtl.net"
-LABEL net.etsmtl.sonia-auv.base_img.build-date=${BUILD_DATE}
-LABEL net.etsmtl.sonia-auv.base_img.version=${L4T_IMG_TAG}
-LABEL net.etsmtl.sonia-auv.base_img.name="ros-l4t-base"
+LABEL net.etsmtl.sonia-auv.base_img.build-date={BUILD_DATE}
+LABEL net.etsmtl.sonia-auv.base_img.version=${VERSION}
+LABEL net.etsmtl.sonia-auv.source_img.version=${L4T_IMG_TAG}
 
 # System Specific
 ENV DEBIAN_FRONTEND=noninteractive
