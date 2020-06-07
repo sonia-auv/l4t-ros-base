@@ -9,7 +9,7 @@ FROM nvcr.io/nvidia/l4t-base:${L4T_IMG_TAG}
 
 ARG BUILD_DATE
 ARG VERSION
-ARG TARGET_ROS_META_PACKAGE
+ARG TARGET_ROS_META_PACKAGE=robot
 
 LABEL maintainer="club.sonia@etsmtl.net"
 LABEL net.etsmtl.sonia-auv.base_img.build-date=${BUILD_DATE}
@@ -57,7 +57,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 
-COPY .scripts/ros_entrypoint.sh /
+COPY scripts/ros_entrypoint.sh /
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
