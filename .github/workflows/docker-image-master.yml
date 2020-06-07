@@ -12,7 +12,7 @@ jobs:
       ARCH: arm64
       TARGET_TYPE: robot
       TARGET_VERSION: feature
-      IMAGE_NAME: l4t_ros_robot_base
+      IMAGE_NAME: l4t_ros_base
       GITHUB_REMOTE_URL: docker.pkg.github.com/${{ github.repository }}
     steps:
       - uses: actions/checkout@v2
@@ -23,7 +23,7 @@ jobs:
 
       - name: Build the docker image (robot base)
         run: |
-          docker build . --file ${DOCKERFILE} --tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '  +%Y-%m-%d_%H:%M:%S')
+          docker build . --file ${DOCKERFILE} --tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '+%Y-%m-%d_%H:%M:%S')
           --build-arg TARGET_ROS_META_PACKAGE=${TARGET_TYPE}
 
       - name: Login to Github Package Registry
@@ -46,9 +46,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ARCH: arm64
-      TARGET_TYPE: robot
+      TARGET_TYPE: perception
       TARGET_VERSION: feature
-      IMAGE_NAME: l4t_ros_robot_base
+      IMAGE_NAME: l4t_ros_base
       GITHUB_REMOTE_URL: docker.pkg.github.com/${{ github.repository }}
     steps:
       - uses: actions/checkout@v2
@@ -59,7 +59,7 @@ jobs:
 
       - name: Build the docker image (robot base)
         run: |
-          docker build . --file ${DOCKERFILE} --tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '  +%Y-%m-%d_%H:%M:%S') --build-arg TARGET_ROS_META_PACKAGE=${TARGET_TYPE}
+          docker build . --file ${DOCKERFILE} --tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '+%Y-%m-%d_%H:%M:%S') --build-arg TARGET_ROS_META_PACKAGE=${TARGET_TYPE}
 
       - name: Login to Github Package Registry
         run: |
