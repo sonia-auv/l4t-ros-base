@@ -4,7 +4,7 @@ SONIA'S custom Linux 4 Tegra, ROS docker images, this base image has been create
 
 ![Docker Image CI - Master Branch](https://github.com/sonia-auv/l4t-ros-base/workflows/Docker%20Image%20CI%20-%20Master%20Branch/badge.svg)
 ![Docker Image CI - Develop Branch](https://github.com/sonia-auv/l4t-ros-base/workflows/Docker%20Image%20CI%20-%20Develop%20Branch/badge.svg?branch=develop)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/sonia-auv/l4t-ros-base
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/sonia-auv/l4t-ros-base)
 ![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/sonia-auv/l4t-ros-base.svg)
 
 
@@ -41,4 +41,4 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## License
 
-All licences have been added into the container image 
+All licences have been added into the container image
