@@ -55,7 +55,7 @@ jobs:
 
       - name: Build the docker image (perception based)
         run: |
-          docker build . --tag build-develop-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '+%Y-%m-%d_%H:%M:%S') --build-arg TARGET_ROS_META_PACKAGE=${TARGET_ROS_META_PACKAGE}
+          docker build . --tag build-develop-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '+%Y-%m-%d_%H:%M:%S') --build-arg TARGET_ROS_META_PACKAGE=${TARGET_TYPE}
 
       - name: Login to Github Package Registry
         run: |
