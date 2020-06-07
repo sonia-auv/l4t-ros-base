@@ -9,8 +9,10 @@ jobs:
     name: "Build ROS robot L4T ARM64 (NVIDIA XAVIER)"
     runs-on: ubuntu-latest
     env:
+      ARCH: arm64
+      TARGET_TYPE: robot
+      TARGET_VERSION: feature
       IMAGE_NAME: l4t_ros_robot_base
-      TARGET_ROS_META_PACKAGE: robot
       GITHUB_REMOTE_URL: docker.pkg.github.com/${{ github.repository }}
     steps:
       - uses: actions/checkout@v2
@@ -22,7 +24,7 @@ jobs:
       - name: Build the docker image (robot base)
         run: |
           docker build . --file ${DOCKERFILE} --tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '  +%Y-%m-%d_%H:%M:%S')
-          --build-arg TARGET_ROS_META_PACKAGE=${TARGET_ROS_META_PACKAGE}
+          --build-arg TARGET_ROS_META_PACKAGE=${TARGET_TYPE}
 
       - name: Login to Github Package Registry
         run: |
@@ -31,8 +33,8 @@ jobs:
       - name: Create Docker Image Tag
         run: |
           PACKAGE_VERSION=$(sed -n -e 's/.*<version>\(.*\)<\/version>.*/\1/p' package.xml)
-          docker tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${PACKAGE_VERSION}
-          docker tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:latest
+          docker tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}-${PACKAGE_VERSION}
+          docker tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}-latest
 
       - name: Push Image to Github Packages Registry
         run: |
@@ -43,8 +45,10 @@ jobs:
     name: "Build ROS robot L4T ARM64 (NVIDIA XAVIER)"
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: l4t_ros_perception_base
-      TARGET_ROS_META_PACKAGE: perception
+      ARCH: arm64
+      TARGET_TYPE: robot
+      TARGET_VERSION: feature
+      IMAGE_NAME: l4t_ros_robot_base
       GITHUB_REMOTE_URL: docker.pkg.github.com/${{ github.repository }}
     steps:
       - uses: actions/checkout@v2
@@ -55,7 +59,7 @@ jobs:
 
       - name: Build the docker image (robot base)
         run: |
-          docker build . --file ${DOCKERFILE} --tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '  +%Y-%m-%d_%H:%M:%S') --build-arg TARGET_ROS_META_PACKAGE=${TARGET_ROS_META_PACKAGE}
+          docker build . --file ${DOCKERFILE} --tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '  +%Y-%m-%d_%H:%M:%S') --build-arg TARGET_ROS_META_PACKAGE=${TARGET_TYPE}
 
       - name: Login to Github Package Registry
         run: |
@@ -64,8 +68,8 @@ jobs:
       - name: Create Docker Image Tag
         run: |
           PACKAGE_VERSION=$(sed -n -e 's/.*<version>\(.*\)<\/version>.*/\1/p' package.xml)
-          docker tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${PACKAGE_VERSION}
-          docker tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:latest
+          docker tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}-${PACKAGE_VERSION}
+          docker tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}-latest
 
       - name: Push Image to Github Packages Registry
         run: |

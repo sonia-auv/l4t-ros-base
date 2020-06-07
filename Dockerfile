@@ -22,7 +22,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 ENV ROS_DISTRO=melodic
-ENV ROS_META_PACKAGE=${ROS_META_PACKAGE}
+
 
 # ROS Install Start
 # setup timezone
@@ -53,5 +53,5 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 # Install ROS packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-melodic-ros-base=1.4.1-0* \
-    ros-melodic-${ROS_META_PACKAGE}=1.4.1-0* \
+    ros-melodic-${TARGET_ROS_META_PACKAGE}=1.4.1-0* \
     && rm -rf /var/lib/apt/lists/*
