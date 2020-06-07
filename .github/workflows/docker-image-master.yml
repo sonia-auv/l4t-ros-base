@@ -11,7 +11,7 @@ jobs:
     env:
       ARCH: arm64
       TARGET_TYPE: robot
-      TARGET_VERSION: feature
+      TARGET_VERSION: master
       IMAGE_NAME: l4t_ros_base
       GITHUB_REMOTE_URL: docker.pkg.github.com/${{ github.repository }}
     steps:
@@ -47,7 +47,7 @@ jobs:
     env:
       ARCH: arm64
       TARGET_TYPE: perception
-      TARGET_VERSION: feature
+      TARGET_VERSION: master
       IMAGE_NAME: l4t_ros_base
       GITHUB_REMOTE_URL: docker.pkg.github.com/${{ github.repository }}
     steps:
