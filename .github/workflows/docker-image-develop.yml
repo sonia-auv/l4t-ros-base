@@ -35,7 +35,7 @@ jobs:
 
       - name: Push Image to Github Packages Registry
         run: |
-          docker push ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:develop
+          docker push ${GITHUB_REMOTE_URL}/${IMAGE_NAME}
 
   build-ros-perception-l4t-arm64:
     name: "Build ROS perception L4T ARM64 (NVIDIA XAVIER)"
@@ -67,7 +67,7 @@ jobs:
 
       - name: Push Image to Github Packages Registry
         run: |
-          docker push ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:develop
+          docker push ${GITHUB_REMOTE_URL}/${IMAGE_NAME}
 
   notify-success:
     name: "Notify Slack - Success"
