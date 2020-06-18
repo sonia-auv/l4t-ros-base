@@ -21,6 +21,9 @@ jobs:
           sudo apt-get install qemu binfmt-support qemu-user-static
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
+      - name: Set Target version
+        run: echo '::set-env name=TARGET_VERSION::release-'$(sed -n -e 's/.*<version>\(.*\)<\/version>.*/\1/p' package.xml)
+
       - name: Build the docker image (robot base)
         run: |
           docker build . --tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '+%Y-%m-%d_%H:%M:%S')
@@ -32,13 +35,11 @@ jobs:
 
       - name: Create Docker Image Tag
         run: |
-          PACKAGE_VERSION=$(sed -n -e 's/.*<version>\(.*\)<\/version>.*/\1/p' package.xml)
           docker tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}-${PACKAGE_VERSION}
           docker tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}-latest
 
       - name: Push Image to Github Packages Registry
         run: |
-          PACKAGE_VERSION=$(sed -n -e 's/.*<version>\(.*\)<\/version>.*/\1/p' package.xml)
           docker push ${GITHUB_REMOTE_URL}/${IMAGE_NAME}
 
   build-ros-perception-l4t-arm64:
@@ -57,6 +58,9 @@ jobs:
           sudo apt-get install qemu binfmt-support qemu-user-static
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
+      - name: Set Target version
+        run: echo '::set-env name=TARGET_VERSION::release-'$(sed -n -e 's/.*<version>\(.*\)<\/version>.*/\1/p' package.xml)
+
       - name: Build the docker image (robot base)
         run: |
           docker build . --tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '+%Y-%m-%d_%H:%M:%S') --build-arg TARGET_ROS_META_PACKAGE=${TARGET_TYPE}
@@ -67,13 +71,11 @@ jobs:
 
       - name: Create Docker Image Tag
         run: |
-          PACKAGE_VERSION=$(sed -n -e 's/.*<version>\(.*\)<\/version>.*/\1/p' package.xml)
           docker tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}-${PACKAGE_VERSION}
           docker tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}-latest
 
       - name: Push Image to Github Packages Registry
         run: |
-          PACKAGE_VERSION=$(sed -n -e 's/.*<version>\(.*\)<\/version>.*/\1/p' package.xml)
           docker push ${GITHUB_REMOTE_URL}/${IMAGE_NAME}
 
   create-release:
