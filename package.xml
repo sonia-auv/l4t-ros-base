@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>l4t_ros_base</name>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <description>L4T ROS base</description>
   <maintainer email="club.sonia@etsmtl.net">Club SONIA</maintainer>
 </package>

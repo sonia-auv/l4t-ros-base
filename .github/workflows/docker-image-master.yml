@@ -11,7 +11,6 @@ jobs:
     env:
       ARCH: arm64
       TARGET_TYPE: robot
-      TARGET_VERSION: master
       IMAGE_NAME: l4t_ros_base
       GITHUB_REMOTE_URL: docker.pkg.github.com/${{ github.repository }}
     steps:
@@ -34,8 +33,9 @@ jobs:
 
       - name: Create Docker Image Tag
         run: |
-          docker tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}-${PACKAGE_VERSION}
-          docker tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}-latest
+          docker tag build-${TARGET_VERSION}-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}
+          docker tag build-${TARGET_VERSION}-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-latest
+          docker tag build-${TARGET_VERSION}-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:latest
 
       - name: Push Image to Github Packages Registry
         run: |
@@ -70,8 +70,9 @@ jobs:
 
       - name: Create Docker Image Tag
         run: |
-          docker tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}-${PACKAGE_VERSION}
-          docker tag build-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}-latest
+          docker tag build-${TARGET_VERSION}-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}
+          docker tag build-${TARGET_VERSION}-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-latest
+          docker tag build-${TARGET_VERSION}-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:latest
 
       - name: Push Image to Github Packages Registry
         run: |
@@ -83,11 +84,12 @@ jobs:
     needs: [build-ros-robot-l4t-arm64, build-ros-perception-l4t-arm64]
     steps:
       - uses: actions/checkout@v2
+      - name: Set Target version
+        run: echo '::set-env name=TARGET_VERSION::release-'$(sed -n -e 's/.*<version>\(.*\)<\/version>.*/\1/p' package.xml)
+
       - name: Create Git Tag
         run: |
-          PACKAGE_VERSION=$(sed -n -e 's/.*<version>\(.*\)<\/version>.*/\1/p' package.xml)
-          echo "::set-env name=PACKAGE_VERSION::$PACKAGE_VERSION"
-          git tag ${PACKAGE_VERSION}
+          git tag ${TARGET_VERSION}
           git push origin --tags
 
       - name: Create Github Release
@@ -95,8 +97,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.PACKAGE_VERSION }}
-          release_name: Release ${{ env.PACKAGE_VERSION }}
+          tag_name: ${{ env.TARGET_VERSION }}
+          release_name: Release ${{ env.TARGET_VERSION }}
           body: |
             A new release for this package has been created
           draft: false
