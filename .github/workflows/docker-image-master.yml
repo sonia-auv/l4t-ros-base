@@ -83,7 +83,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set Target version
-        run: echo '::set-env name=TARGET_VERSION::release-'$(sed -n -e 's/.*<version>\(.*\)<\/version>.*/\1/p' package.xml)
+        run: echo '::set-env name=TARGET_VERSION::'$(sed -n -e 's/.*<version>\(.*\)<\/version>.*/\1/p' package.xml)
 
       - name: Create Git Tag
         run: |
