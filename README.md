@@ -1,6 +1,6 @@
 # L4T-ROS-Base
 
-SONIA'S custom Linux 4 Tegra, ROS docker images, this base image has been created to reduce [sonia_msgs](https://github.com/sonia-auv/sonia_msgs) build time
+SONIA'S custom Linux 4 Tegra, ROS docker images, this base image has been created to reduce [sonia_messages](https://github.com/sonia-auv/sonia_messages) build time
 
 ![Docker Image CI - Master Branch](https://github.com/sonia-auv/l4t-ros-base/workflows/Docker%20Image%20CI%20-%20Master%20Branch/badge.svg)
 ![Docker Image CI - Develop Branch](https://github.com/sonia-auv/l4t-ros-base/workflows/Docker%20Image%20CI%20-%20Develop%20Branch/badge.svg?branch=develop)
