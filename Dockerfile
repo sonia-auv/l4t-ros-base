@@ -1,3 +1,4 @@
+
 ARG L4T_IMG_TAG=r32.4.2
 FROM nvcr.io/nvidia/l4t-base:${L4T_IMG_TAG}
 
@@ -7,20 +8,21 @@ FROM nvcr.io/nvidia/l4t-base:${L4T_IMG_TAG}
 # https://github.com/osrf/docker_images/blob/7ff09c2a75e902bc2bb25a1f1ae748ec4e9c7a4b/ros/melodic/ubuntu/bionic/robot/Dockerfile
 
 ARG BUILD_DATE
+ARG VERSION
+ARG TARGET_ROS_META_PACKAGE=robot
 
 LABEL maintainer="club.sonia@etsmtl.net"
-LABEL net.etsmtl.sonia-auv.base_img.build-date={BUILD_DATE}
-LABEL net.etsmtl.sonia-auv.base_img.version=${L4T_IMG_TAG}
-LABEL net.etsmtl.sonia-auv.image_version=
+LABEL net.etsmtl.sonia-auv.base_img.build-date=${BUILD_DATE}
+LABEL net.etsmtl.sonia-auv.base_img.version=${VERSION}
 
 # System Specific
 ENV DEBIAN_FRONTEND=noninteractive
-
 
 # ROS Specific
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 ENV ROS_DISTRO=melodic
+
 
 # ROS Install Start
 # setup timezone
@@ -45,11 +47,17 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     python-rosinstall \
     python-vcstools \
     && rosdep init  \
-    && rosdep update --rosdistro $ROS_DISTRO \
+    && rosdep update --rosdistro ${ROS_DISTRO} \
     && rm -rf /var/lib/apt/lists/*
 
 # Install ROS packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-melodic-ros-base=1.4.1-0* \
-    ros-melodic-perception=1.4.1-0* \
+    ros-melodic-${TARGET_ROS_META_PACKAGE}=1.4.1-0* \
     && rm -rf /var/lib/apt/lists/*
+
+
+COPY scripts/ros_entrypoint.sh /
+
+ENTRYPOINT ["/ros_entrypoint.sh"]
+CMD ["bash"]

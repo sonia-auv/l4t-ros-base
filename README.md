@@ -4,7 +4,7 @@ SONIA'S custom Linux 4 Tegra, ROS docker images, this base image has been create
 
 ![Docker Image CI - Master Branch](https://github.com/sonia-auv/l4t-ros-base/workflows/Docker%20Image%20CI%20-%20Master%20Branch/badge.svg)
 ![Docker Image CI - Develop Branch](https://github.com/sonia-auv/l4t-ros-base/workflows/Docker%20Image%20CI%20-%20Develop%20Branch/badge.svg?branch=develop)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/sonia-auv/l4t-ros-base
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/sonia-auv/l4t-ros-base)
 ![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/sonia-auv/l4t-ros-base.svg)
 
 
@@ -33,7 +33,7 @@ The following packages are examples they should be replaced with project depende
 
 * [ROS](http://wiki.ros.org/) - ROS Framework
 * [Docker](https://docs.docker.com/) - Docker
-* [NVIDIA L4T](https://ngc.nvidia.com/catalog/containers/nvidia:l4t-base)
+* [NVIDIA L4T](https://ngc.nvidia.com/catalog/containers/nvidia:l4t-base) - NVIDIA L4T Base
 
 ## Versioning
 
@@ -41,4 +41,4 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## License
 
-All licences have been added into the container image 
+All licences have been added into the container image
