@@ -1,9 +1,8 @@
-name: Docker Image CI - Develop Branch
+name: Docker Image CI - Fix Branch
 
 on:
   push:
-    branches: [develop]
-
+    branches: [fix/**]
 jobs:
   build-ros-robot-l4t-arm64:
     name: "Build ROS robot L4T ARM64 (NVIDIA XAVIER)"
@@ -11,7 +10,7 @@ jobs:
     env:
       ARCH: arm64
       TARGET_TYPE: robot
-      TARGET_VERSION: develop
+      TARGET_VERSION: fix
       IMAGE_NAME: l4t_ros_base
       GITHUB_REMOTE_URL: docker.pkg.github.com/${{ github.repository }}
     steps:
@@ -23,7 +22,7 @@ jobs:
 
       - name: Build the docker image (robot based)
         run: |
-          docker build . --tag build-develop-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '+%Y-%m-%d_%H:%M:%S') --build-arg TARGET_ROS_META_PACKAGE=${TARGET_TYPE}
+          docker build . --tag build-fix-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '+%Y-%m-%d_%H:%M:%S') --build-arg TARGET_ROS_META_PACKAGE=${TARGET_TYPE}
 
       - name: Login to Github Package Registry
         run: |
@@ -31,7 +30,7 @@ jobs:
 
       - name: Create Docker Image Tag
         run: |
-          docker tag build-develop-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}
+          docker tag build-fix-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}-${GITHUB_REF##*/}
 
       - name: Push Image to Github Packages Registry
         run: |
@@ -43,8 +42,9 @@ jobs:
     env:
       ARCH: arm64
       TARGET_TYPE: perception
-      TARGET_VERSION: develop
+      TARGET_VERSION: fix
       IMAGE_NAME: l4t_ros_base
+      TARGET_ROS_META_PACKAGE: perception
       GITHUB_REMOTE_URL: docker.pkg.github.com/${{ github.repository }}
     steps:
       - uses: actions/checkout@v2
@@ -55,7 +55,7 @@ jobs:
 
       - name: Build the docker image (perception based)
         run: |
-          docker build . --tag build-develop-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '+%Y-%m-%d_%H:%M:%S') --build-arg TARGET_ROS_META_PACKAGE=${TARGET_TYPE}
+          docker build .  --tag build-fix-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} --build-arg BUILD_DATE=$(date '+%Y-%m-%d_%H:%M:%S') --build-arg VERSION=${GITHUB_REF##*/}-$(date '+%Y-%m-%d_%H:%M:%S') --build-arg TARGET_ROS_META_PACKAGE=${TARGET_ROS_META_PACKAGE}
 
       - name: Login to Github Package Registry
         run: |
@@ -63,7 +63,7 @@ jobs:
 
       - name: Create Docker Image Tag
         run: |
-          docker tag build-develop-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}
+          docker tag build-fix-${GITHUB_REF##*/}-${GITHUB_RUN_NUMBER} ${GITHUB_REMOTE_URL}/${IMAGE_NAME}:${ARCH}-${TARGET_TYPE}-${TARGET_VERSION}-${GITHUB_REF##*/}
 
       - name: Push Image to Github Packages Registry
         run: |
