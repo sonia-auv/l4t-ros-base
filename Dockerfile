@@ -1,5 +1,5 @@
 
-ARG L4T_IMG_TAG=r32.4.2
+ARG L4T_IMG_TAG=r32.6.1
 FROM nvcr.io/nvidia/l4t-base:${L4T_IMG_TAG}
 
 # Highly inspired on
@@ -32,16 +32,15 @@ RUN echo 'Etc/UTC' > /etc/timezone && \
     apt-get install -q -y --no-install-recommends tzdata && \
     rm -rf /var/lib/apt/lists/*
 
-# Setup keys
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 
 # Setup sources.list
-RUN echo "deb http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros1-latest.list
+RUN echo "deb http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list
+RUN apt install -y curl gnupg2
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
 
 # Install bootstrap tools
 RUN apt-get update && apt-get install --no-install-recommends -y \
     dirmngr \
-    gnupg2 \
     build-essential \
     python-rosdep \
     python-rosinstall \
@@ -52,8 +51,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 # Install ROS packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-melodic-ros-base=1.4.1-0* \
-    ros-melodic-${TARGET_ROS_META_PACKAGE}=1.4.1-0* \
+    ros-melodic-ros-base \
+    ros-melodic-${TARGET_ROS_META_PACKAGE} \
     && rm -rf /var/lib/apt/lists/*
 
 
